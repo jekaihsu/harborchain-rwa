@@ -18,7 +18,27 @@ export const nftMarketplaces = {
   },
 };
 
-export const products = [
+export type RWAProduct = {
+  id: string;
+  name: string;
+  fullName: string;
+  tagline: string;
+  color: string;
+  pixelArt: string;
+  description: string;
+  specs: string[];
+  nftMarket: keyof typeof nftMarketplaces;
+  contractAddress: string;
+  totalSupply: number;
+  priceETH: string;
+  revenueModel: {
+    rentalYield: string;
+    dataRevenue: string;
+    appreciation: string;
+  };
+};
+
+export const products: RWAProduct[] = [
   {
     id: "gps",
     name: "GPS",

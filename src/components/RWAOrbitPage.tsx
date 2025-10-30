@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Wallet, Github, Twitter } from "lucide-react";
 
-import { products } from "./data/rwaProducts"; // ✅ 只留這一個，不要再宣告一次
+import { products, type RWAProduct } from "./data/rwaProducts"; // ✅ 只留這一個，不要再宣告一次
 import PixelArt from "./PixelArt"; // 你剛剛已經拆出去的
 import RWAProductModal from "./RWAProductModal"; // 你剛剛也拆出去的
 
@@ -24,8 +24,12 @@ function useOrbit(
     Array.from({ length: itemCount }, (_, i) => (i * 2 * Math.PI) / itemCount)
   );
   const speed = useRef(idle);
-  const lastInteraction = useRef(Date.now());
+  const lastInteraction = useRef<number>(0);
   const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    lastInteraction.current = Date.now();
+  }, []);
 
   useEffect(() => {
     const loop = () => {
@@ -105,14 +109,16 @@ function OrbitCarousel({
   products,
   onProductClick,
 }: {
-  products: any[];
-  onProductClick: (p: any) => void;
+  products: RWAProduct[];
+  onProductClick: (p: RWAProduct) => void;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
+  const [dimensions, setDimensions] = useState<{ width: number; height: number }>(
+    { width: 800, height: 500 }
+  );
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(-1);
-  const dragStart = useRef({ x: 0, y: 0 });
+  const dragStart = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const isDragging = useRef(false);
 
   const a = dimensions.width * 0.35;
@@ -319,7 +325,7 @@ function OrbitCarousel({
 
       {/* 底部 tab */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-cyan-500/20">
-        {products.map((p, idx) => (
+        {products.map((p) => (
           <button
             key={p.id}
             onClick={() => onProductClick(p)}
@@ -337,7 +343,7 @@ function OrbitCarousel({
 // 4) 最外層頁面
 // ----------------------------------------------------
 export default function RWAOrbitPage() {
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<RWAProduct | null>(null);
 
   return (
     <div className="relative min-h-screen bg-[#020617] text-white overflow-hidden">

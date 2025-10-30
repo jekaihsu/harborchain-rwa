@@ -3,14 +3,15 @@
 import { useEffect, useMemo } from "react";
 import { X, ExternalLink } from "lucide-react";
 
-import { nftMarketplaces, type RWAProduct } from "./data/rwaProducts";
+import { nftMarketplaces } from "../data/products";
+import type { RWAProduct } from "../types";
 
-type RWAProductModalProps = {
+export type ProductModalProps = {
   product: RWAProduct;
   onClose: () => void;
 };
 
-export default function RWAProductModal({ product, onClose }: RWAProductModalProps) {
+export default function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -28,7 +29,10 @@ export default function RWAProductModal({ product, onClose }: RWAProductModalPro
     };
   }, [onClose]);
 
-  const marketplace = useMemo(() => nftMarketplaces[product.nftMarket], [product.nftMarket]);
+  const marketplace = useMemo(
+    () => nftMarketplaces[product.nftMarket],
+    [product.nftMarket]
+  );
   const marketplaceUrl = useMemo(() => {
     if (!marketplace) return undefined;
     return `${marketplace.baseUrl}${product.contractAddress}`;
@@ -48,7 +52,9 @@ export default function RWAProductModal({ product, onClose }: RWAProductModalPro
       >
         <div className="flex items-start justify-between border-b border-cyan-500/20 bg-black/40 px-6 py-4">
           <div>
-            <p className="text-sm font-mono uppercase tracking-[0.3em] text-cyan-200/70">Tokenized Asset</p>
+            <p className="text-sm font-mono uppercase tracking-[0.3em] text-cyan-200/70">
+              Tokenized Asset
+            </p>
             <h2
               id="rwa-product-modal-title"
               className="mt-2 text-2xl font-semibold text-white"
@@ -72,7 +78,9 @@ export default function RWAProductModal({ product, onClose }: RWAProductModalPro
 
           <div className="grid gap-4 rounded-xl border border-cyan-500/20 bg-black/30 p-4 md:grid-cols-2">
             <div>
-              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-200/70">Technical Specs</h3>
+              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-200/70">
+                Technical Specs
+              </h3>
               <ul className="mt-3 space-y-2 text-sm text-slate-200">
                 {product.specs.map((spec) => (
                   <li key={spec} className="flex items-start gap-2">
@@ -84,19 +92,27 @@ export default function RWAProductModal({ product, onClose }: RWAProductModalPro
             </div>
 
             <div>
-              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-200/70">Revenue Model</h3>
+              <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-200/70">
+                Revenue Model
+              </h3>
               <ul className="mt-3 space-y-2 text-sm text-slate-200">
                 <li className="flex items-center justify-between rounded-lg border border-cyan-500/20 bg-cyan-500/10 px-3 py-2">
                   <span className="text-cyan-100/80">租賃收益</span>
-                  <span className="font-semibold text-cyan-200">{product.revenueModel.rentalYield}</span>
+                  <span className="font-semibold text-cyan-200">
+                    {product.revenueModel.rentalYield}
+                  </span>
                 </li>
                 <li className="flex items-center justify-between rounded-lg border border-cyan-500/20 bg-cyan-500/10 px-3 py-2">
                   <span className="text-cyan-100/80">數據收益</span>
-                  <span className="font-semibold text-cyan-200">{product.revenueModel.dataRevenue}</span>
+                  <span className="font-semibold text-cyan-200">
+                    {product.revenueModel.dataRevenue}
+                  </span>
                 </li>
                 <li className="flex items-center justify-between rounded-lg border border-cyan-500/20 bg-cyan-500/10 px-3 py-2">
                   <span className="text-cyan-100/80">預估增值</span>
-                  <span className="font-semibold text-cyan-200">{product.revenueModel.appreciation}</span>
+                  <span className="font-semibold text-cyan-200">
+                    {product.revenueModel.appreciation}
+                  </span>
                 </li>
               </ul>
             </div>
@@ -104,16 +120,28 @@ export default function RWAProductModal({ product, onClose }: RWAProductModalPro
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="rounded-xl border border-cyan-500/20 bg-black/30 p-4">
-              <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">Total Supply</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{product.totalSupply}</p>
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">
+                Total Supply
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {product.totalSupply}
+              </p>
             </div>
             <div className="rounded-xl border border-cyan-500/20 bg-black/30 p-4">
-              <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">Price</p>
-              <p className="mt-2 text-2xl font-semibold text-white">{product.priceETH} ETH</p>
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">
+                Price
+              </p>
+              <p className="mt-2 text-2xl font-semibold text-white">
+                {product.priceETH} ETH
+              </p>
             </div>
             <div className="rounded-xl border border-cyan-500/20 bg-black/30 p-4">
-              <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">Contract</p>
-              <p className="mt-2 break-all font-semibold text-cyan-200">{product.contractAddress}</p>
+              <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">
+                Contract
+              </p>
+              <p className="mt-2 break-all font-semibold text-cyan-200">
+                {product.contractAddress}
+              </p>
             </div>
           </div>
 
@@ -125,7 +153,9 @@ export default function RWAProductModal({ product, onClose }: RWAProductModalPro
               className="group flex items-center justify-between rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-5 py-3 text-cyan-100 transition hover:bg-cyan-500/20"
             >
               <div>
-                <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">Marketplace</p>
+                <p className="text-xs font-mono uppercase tracking-[0.2em] text-cyan-200/70">
+                  Marketplace
+                </p>
                 <p className="mt-1 text-lg font-semibold text-white">
                   {marketplace.icon} {marketplace.name}
                 </p>

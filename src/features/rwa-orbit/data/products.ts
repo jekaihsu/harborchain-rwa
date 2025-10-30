@@ -1,6 +1,6 @@
-// src/components/data/rwaProducts.ts
+import type { NFTMarketplace, NFTMarketplaceId, RWAProduct } from "../types";
 
-export const nftMarketplaces = {
+export const nftMarketplaces: Record<NFTMarketplaceId, NFTMarketplace> = {
   opensea: {
     name: "OpenSea",
     baseUrl: "https://opensea.io/assets/ethereum/",
@@ -16,26 +16,6 @@ export const nftMarketplaces = {
     baseUrl: "https://blur.io/asset/",
     icon: "⚡",
   },
-};
-
-export type RWAProduct = {
-  id: string;
-  name: string;
-  fullName: string;
-  tagline: string;
-  color: string;
-  pixelArt: string;
-  description: string;
-  specs: string[];
-  nftMarket: keyof typeof nftMarketplaces;
-  contractAddress: string;
-  totalSupply: number;
-  priceETH: string;
-  revenueModel: {
-    rentalYield: string;
-    dataRevenue: string;
-    appreciation: string;
-  };
 };
 
 export const products: RWAProduct[] = [
@@ -148,7 +128,7 @@ export const products: RWAProduct[] = [
       ████████
       ██░░░░██
       ██████░░
-      ██░░████
+      █░░████
       ██░░░░██
       ████████
       ░░░░░░░░

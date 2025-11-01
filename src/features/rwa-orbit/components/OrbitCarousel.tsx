@@ -33,6 +33,10 @@ export default function OrbitCarousel({ products, onProductClick }: OrbitCarouse
   });
 
   useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
     const update = () => {
       if (containerRef.current) {
         setDimensions({
@@ -41,9 +45,12 @@ export default function OrbitCarousel({ products, onProductClick }: OrbitCarouse
         });
       }
     };
+
     update();
     window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    return () => {
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   const handleMouseDown = (event: React.MouseEvent) => {

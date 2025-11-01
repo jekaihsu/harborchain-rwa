@@ -1,6 +1,6 @@
-// src/components/data/rwaProducts.ts
+import type { NFTMarketplace, NFTMarketplaceId, RWAProduct } from "../types";
 
-export const nftMarketplaces = {
+export const nftMarketplaces: Record<NFTMarketplaceId, NFTMarketplace> = {
   opensea: {
     name: "OpenSea",
     baseUrl: "https://opensea.io/assets/ethereum/",
@@ -18,7 +18,7 @@ export const nftMarketplaces = {
   },
 };
 
-export const products = [
+export const products: RWAProduct[] = [
   {
     id: "gps",
     name: "GPS",
@@ -128,7 +128,7 @@ export const products = [
       ████████
       ██░░░░██
       ██████░░
-      ██░░████
+      █░░████
       ██░░░░██
       ████████
       ░░░░░░░░

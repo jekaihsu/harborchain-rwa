@@ -1,5 +1,5 @@
 // src/app/page.tsx
-import RWAOrbitPage from "@/components/RWAOrbitPage";
+import { RWAOrbitPage } from "@/features/rwa-orbit";
 
 export default function Page() {
   return <RWAOrbitPage />;

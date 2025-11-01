@@ -13,18 +13,30 @@ export type ProductModalProps = {
 
 export default function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined") {
+      return undefined;
+    }
+
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
       }
     };
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const body = document.body;
+    if (!body) {
+      window.addEventListener("keydown", handleKey);
+      return () => {
+        window.removeEventListener("keydown", handleKey);
+      };
+    }
+
+    const originalOverflow = body.style.overflow;
+    body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKey);
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleKey);
     };
   }, [onClose]);

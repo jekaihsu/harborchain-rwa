@@ -12,7 +12,7 @@ import type { ProductModalProps } from "./modal/ProductModal";
 import type { RWAProduct } from "./types";
 
 const ProductModal = dynamic<ProductModalProps>(
-  () => import("./modal/ProductModal").then((module) => module.ProductModal),
+  () => import("./modal/ProductModal"),
   {
     ssr: false,
   }

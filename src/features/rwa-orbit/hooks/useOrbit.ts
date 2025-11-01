@@ -20,6 +20,19 @@ export function useOrbit(itemCount: number, { a = 300, b = 180, friction = 0.95,
   }, []);
 
   useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      typeof window.requestAnimationFrame !== "function"
+    ) {
+      return undefined;
+    }
+
+    const raf = window.requestAnimationFrame.bind(window);
+    const cancelRaf =
+      typeof window.cancelAnimationFrame === "function"
+        ? window.cancelAnimationFrame.bind(window)
+        : undefined;
+
     const loop = () => {
       const now = Date.now();
       const timeSinceInteraction = now - lastInteraction.current;
@@ -32,12 +45,15 @@ export function useOrbit(itemCount: number, { a = 300, b = 180, friction = 0.95,
         speed.current *= friction;
       }
 
-      rafRef.current = requestAnimationFrame(loop);
+      rafRef.current = raf(loop);
     };
 
-    rafRef.current = requestAnimationFrame(loop);
+    rafRef.current = raf(loop);
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current !== null && cancelRaf) {
+        cancelRaf(rafRef.current);
+      }
+      rafRef.current = null;
     };
   }, [friction, idle]);
 

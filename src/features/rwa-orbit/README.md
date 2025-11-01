@@ -21,3 +21,18 @@ src/features/rwa-orbit/
 ```
 
 When adding new behavior prefer colocating logic inside this feature slice, keeping the exported surface area small (the page component and typed data). This makes the module safe for parallel development.
+
+## Manual testing
+
+When validating the wallet experience without a real browser extension, run the Next.js dev server and simulate a MetaMask provider with Playwright:
+
+1. `npm run dev -- --hostname 0.0.0.0 --port 3000`
+2. In another shell, execute a Playwright script that injects `window.ethereum`, requests `eth_requestAccounts`, and asserts that the connect button toggles between `Connect` and the truncated address `0x1234…5678`.
+
+Example log output from the simulated flow:
+
+```
+Connect buttons found before interaction: 1
+Connected label visible
+Returned to disconnected state
+```

@@ -11,7 +11,7 @@ export type ProductModalProps = {
   onClose: () => void;
 };
 
-export default function ProductModal({ product, onClose }: ProductModalProps) {
+export function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
     if (typeof window === "undefined" || typeof document === "undefined") {
       return undefined;
@@ -180,3 +180,5 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     </div>
   );
 }
+
+export default ProductModal;

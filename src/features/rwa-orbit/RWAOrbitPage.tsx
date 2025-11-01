@@ -2,12 +2,21 @@
 
 import { useState } from "react";
 
+import dynamic from "next/dynamic";
+
 import OrbitCarousel from "./components/OrbitCarousel";
 import GridBackground from "./components/GridBackground";
 import OrbitHeader from "./components/OrbitHeader";
-import ProductModal from "./modal/ProductModal";
 import { products } from "./data/products";
+import type { ProductModalProps } from "./modal/ProductModal";
 import type { RWAProduct } from "./types";
+
+const ProductModal = dynamic<ProductModalProps>(
+  () => import("./modal/ProductModal").then((module) => module.ProductModal),
+  {
+    ssr: false,
+  }
+);
 
 export default function RWAOrbitPage() {
   const [selectedProduct, setSelectedProduct] = useState<RWAProduct | null>(null);

@@ -22,6 +22,7 @@ type EthereumProvider = {
     event: string,
     listener: (...args: unknown[]) => void,
   ) => void;
+  providers?: EthereumProvider[];
 };
 
 declare global {
@@ -34,21 +35,49 @@ function truncateAddress(address: string) {
   return `${address.slice(0, 6)}…${address.slice(-4)}`;
 }
 
+function resolveBrowserProvider(): EthereumProvider | undefined {
+  if (typeof window === "undefined") {
+    return undefined;
+  }
+
+  const { ethereum } = window;
+
+  if (!ethereum) {
+    return undefined;
+  }
+
+  if (Array.isArray(ethereum.providers)) {
+    const metaMaskProvider = ethereum.providers.find(
+      (provider) => provider && provider.isMetaMask,
+    );
+
+    if (metaMaskProvider) {
+      return metaMaskProvider;
+    }
+
+    return ethereum.providers[0];
+  }
+
+  if (ethereum.isMetaMask || typeof ethereum.request === "function") {
+    return ethereum;
+  }
+
+  return undefined;
+}
+
 export default function useWallet() {
+  const initialProvider = resolveBrowserProvider();
   const [accounts, setAccounts] = useState<string[]>([]);
   const [status, setStatus] = useState<WalletStatus>(() => {
     if (typeof window === "undefined") {
       return "unavailable";
     }
-    return window.ethereum ? "idle" : "unavailable";
+    return initialProvider ? "idle" : "unavailable";
   });
   const [error, setError] = useState<string | null>(null);
 
   const provider = useMemo<EthereumProvider | undefined>(() => {
-    if (typeof window === "undefined") {
-      return undefined;
-    }
-    return window.ethereum;
+    return resolveBrowserProvider();
   }, []);
 
   useEffect(() => {
